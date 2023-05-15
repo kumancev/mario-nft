@@ -33,6 +33,7 @@
   .link {
     margin-top: -6em;
     margin-bottom: 6em;
+    font-size: 0.8em;
 
     a:hover {
       color: #111;
@@ -63,7 +64,6 @@
     .board {
       display: flex;
       flex-direction: column;
-      border: 2px solid black;
       height: 40vh;
       background-color: rgb(32, 32, 32);
       padding: 1em;
@@ -77,6 +77,19 @@
       p {
         padding: 0.65em;
         color: rgb(230, 230, 230);
+        font-size: 1.2em;
+
+        @media (max-width: 660px) {
+          font-size: 0.8em;
+        }
+
+        @media (max-width: 420px) {
+          font-size: 0.6em;
+        }
+
+        @media (max-width: 380px) {
+          font-size: 0.5em;
+        }
       }
 
       .score {
