@@ -31,21 +31,32 @@ const playerResultSchema = new mongoose.Schema({
 
 const PlayerResult = mongoose.model('PlayerResult', playerResultSchema)
 
+const isValidEthAddress = (address) => {
+  const ethAddressRegex = /^0x[a-fA-F0-9]{40}$/;
+  return ethAddressRegex.test(address);
+}
+
 app.post('/results', async (req, res) => {
   const { name, score } = req.body
-  try {
-    let playerResult = await PlayerResult.findOne({ name })
-    if (playerResult) {
-      playerResult.score += score
-    } else {
-      playerResult = new PlayerResult({ name, score })
+  const isValid = isValidEthAddress(name)
+  if (isValid) {
+    try {
+      let playerResult = await PlayerResult.findOne({ name })
+      if (playerResult) {
+        playerResult.score += score
+      } else {
+        playerResult = new PlayerResult({ name, score })
+      }
+      await playerResult.save()
+      res.status(200).send({ message: "Result updated/saved successfully", data: name })
+    } catch (err) {
+      console.error(err)
+      res.status(500).send('Error updating/saving result')
     }
-    await playerResult.save()
-    res.status(200).send('Result updated/saved successfully')
-  } catch (err) {
-    console.error(err)
-    res.status(500).send('Error updating/saving result')
+  } else {
+    res.status(400).send('Not a valid address')
   }
+
 })
 
 app.get('/results', async (req, res) => {
