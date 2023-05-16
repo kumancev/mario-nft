@@ -24,12 +24,6 @@ function App() {
     }
 
     fetchData()
-
-    const interval = setInterval(fetchData, 300000) // Fetch data every 5 min
-
-    return () => {
-      clearInterval(interval)
-    }
   }, [])
 
   console.log(results)
